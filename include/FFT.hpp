@@ -70,16 +70,16 @@ complex_vector transform(complex_vector const& origin) {
 
 
 
-complex_vector operator()(complex_vector& signal) {
+void operator()(complex_vector& signal) {
     //complex_vector data = transform(signal);
 
 
-    return impl(signal);
+    impl(signal);
 }
 
-complex_vector impl(complex_vector& data) {
+void impl(complex_vector& data) {
     if(data.size() == 1) {
-        return data;
+        return;
     }
 
     complex_vector even = complex_vector(data.size() / 2);
@@ -90,8 +90,8 @@ complex_vector impl(complex_vector& data) {
         odd[i] = data[i * 2 + 1];
     }
 
-    even = impl(even);
-    odd = impl(odd);
+    impl(even);
+    impl(odd);
 
     std::complex<double> w = 1;
     std::complex<double> wN = std::complex<double>(std::cos(2 * M_PI / (double)data.size()), std::sin(2 * M_PI / (double)data.size()));
@@ -100,13 +100,11 @@ complex_vector impl(complex_vector& data) {
         data[i + data.size() / 2] = even[i] - w * odd[i];
         w *= wN;
     }
-
-    return data;
 }
 
-complex_vector restore(complex_vector& data) {
+void restore(complex_vector& data) {
     if(data.size() == 1) {
-        return data;
+        return;
     }
 
     complex_vector even = complex_vector(data.size() / 2);
@@ -117,25 +115,23 @@ complex_vector restore(complex_vector& data) {
         odd[i] = data[i * 2 + 1];
     }
 
-    even = impl(even);
-    odd = impl(odd);
+    restore(even);
+    restore(odd);
 
     std::complex<double> w = 1;
-    std::complex<double> wN = std::complex<double>(std::cos(-(2 * M_PI / (double)data.size())), -std::sin(-(2 * M_PI / (double)data.size())));
+    std::complex<double> wN = std::complex<double>(std::cos(-(2 * M_PI / (double)data.size())), std::sin(-(2 * M_PI / (double)data.size())));
     for (std::size_t i = 0; i < data.size() / 2; ++i) {
         data[i] = even[i] + w * odd[i];
         data[i + data.size() / 2] = even[i] - w * odd[i];
         w *= wN;
     }
-
-    return data;
 }
 
-complex_vector restore__(complex_vector& signal) {
+void restore__(complex_vector& signal) {
     //complex_vector data = transform(signal);
 
 
-    return restore(signal);
+    restore(signal);
 }
 
 };
