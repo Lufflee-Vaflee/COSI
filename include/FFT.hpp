@@ -10,7 +10,6 @@ namespace COSI {
 
 using Fx_signature = double (*)(double X);
 
-
 using sample = std::pair<std::vector<double>, std::vector<double>>;
 
 template<std::size_t N, Fx_signature F>
@@ -126,37 +125,6 @@ void restore(complex_vector& data) {
         w *= wN;
     }
 }
-
-void restore__(complex_vector& signal) {
-    //complex_vector data = transform(signal);
-
-
-    restore(signal);
-}
-
 };
 
 }
-
-
-
-/*
-constexpr bool is2Power() {
-    std::size_t N_ = N;
-    if(N_ < 2) {
-        return false;
-    }
-
-    do
-    {
-        if(N_ % 2 != 0) {
-            return false;
-        }
-
-        N_ /= 2;
-    } while (N_ != 0);
-
-    return true;
-}
-*/
-//static_assert(is2Power(N));
